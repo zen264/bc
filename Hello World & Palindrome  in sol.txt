@@ -1,0 +1,91 @@
+Steps to install MetaMask
+
+1. Go to Chrome Web Store and search for MetaMask.
+2. Click on "Add to Chrome".
+3. Click on "Get Started".
+4. Click on "Create Wallet" and then click on "I Agree".
+5. Create a password and click on “Create a New Wallet”, then click on “Secure my wallet”.
+6. Write down your Secret Recovery Phrase somewhere safe and click on “Confirm” by entering it.
+7. Click on “Done” to finalize the MetaMask Wallet Account.
+   Once completed, you will be greeted with the MetaMask home screen.
+
+8. Open Ganache and note the following details:
+   - RPC Server URL (usually http://127.0.0.1:7545)
+   - Network ID (usually 5777)
+
+9. In MetaMask, click on "Add Network" and create a new custom network:
+   - Network Name: Ganache
+   - New RPC URL: http://127.0.0.1:7545
+   - Chain ID: 1337 (or 5777 depending on Ganache)
+   - Currency Symbol: ETH
+   - Save the network.
+
+10. Import any account from Ganache into MetaMask:
+    - In Ganache, click on the key icon next to an account and copy the private key.
+    - In MetaMask, click "Import Account" and paste the private key.
+    - You now have 100 ETH in your MetaMask test wallet.
+
+11. Now write and deploy smart contracts using Remix.
+
+------------------------------------------------------
+(i) hello.sol
+------------------------------------------------------
+```solidity
+
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.13;
+
+contract hello {
+    function sayHelloWorld() public pure returns (string memory) {
+        return "Hello World";
+    }
+}
+
+```
+Steps:
+
+In Remix, go to the Solidity Compiler tab.
+
+Select Solidity version 0.8.13 and click Compile.
+
+Go to the Deploy & Run Transactions tab.
+
+Set the environment to Injected Web3 (this connects Remix to MetaMask).
+
+Click Deploy and confirm the transaction in MetaMask.
+
+Once deployed, click on the sayHelloWorld function — output will be "Hello World".
+
+
+------------------------------------------------------
+(ii) Palindrome.sol
+------------------------------------------------------
+
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract PalindromeChecker {
+    // Function to check if a number is palindrome
+    function isPalindrome(uint256 number) public pure returns (bool) {
+        uint256 reversedNumber = 0;
+        uint256 originalNumber = number;
+
+        // Reverse the number
+        while (number != 0) {
+            uint256 remainder = number % 10;
+            reversedNumber = reversedNumber * 10 + remainder;
+            number = number / 10;
+        }
+
+        // Check if the original number and reversed number are the same
+        return originalNumber == reversedNumber;
+    }
+}
+
+
+Examples:
+
+Input: 123 → Output: false (Not a palindrome)
+
+Input: 121 → Output: true (Palindrome)
