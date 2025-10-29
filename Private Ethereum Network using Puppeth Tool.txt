@@ -1,0 +1,171 @@
+Setting Up Development Environment
+-----------------------------------
+
+Step 0: Download Geth using Homebrew
+-----------------------------------
+Fire up your terminal and enter the following command. 
+Make sure you already have Homebrew installed, otherwise this command will not work for you.
+
+$ brew tap ethereum/ethereum
+
+This command will clone Ethereum repo into your Library folder on Mac.
+To install geth, run the following command:
+
+$ brew install ethereum
+
+Voila, geth is installed.
+
+Before going any further, let me clear what Geth is:
+geth is the command line interface for running a full ethereum node implemented in Go.
+You can mine real ether (if you’re on mainnet), transfer funds between addresses, create
+smart contracts, make transactions, explore the chain, use Web3 etc.
+
+
+Genesis Block, The Special Block
+-----------------------------------
+Every blockchain has a genesis block, that is the first block. Height of this block is 1.
+It does not hold any transactions. All later blocks get appended to this block.
+
+You can view Ethereum’s mainnet genesis block here:
+https://etherscan.io/block/0
+
+For our testnet, we have to create the genesis block.
+Tool used to create genesis block: puppeth
+
+
+Step 1: Create Genesis block
+-----------------------------------
+Make any directory in which you want to store your blockchain data.
+
+$ mkdir -p ethereum-tutorial && cd ethereum-tutorial
+
+Make a private folder inside this directory and cd into it.
+
+$ mkdir -p private && cd private
+
+Open up your terminal and write following command:
+
+$ puppeth
+
+Something like this should come up and you will be asked to specify a network name to
+administer. Enter the name of your blockchain. I used niharikatestnet. You can use any name.
+
+A series of questions would be asked. Keep answering.
+Finally, exit the puppeth interface by using:
+
+control + c
+
+If you now read the contents in private folder you will see multiple files.
+We’ll be interested in niharikatestnet.json
+
+
+Step 2: Initialise the genesis block
+-----------------------------------
+It’s time to create chaindata and keystore for local blockchain.
+chaindata will store all data related to blockchain and keystore will store private keys
+associated with accounts on the blockchain.
+
+Using terminal enter the following command:
+
+$ geth --datadir ~/ethereum-tutorial/private init niharikatestnet.json
+
+Successfully wrote genesis state. Woohoo!
+You should see chaindata and keystore folders.
+
+
+Step 3: Creating accounts
+-----------------------------------
+We need to create accounts on this blockchain to play around with it.
+
+$ geth --datadir . account new
+
+For each account you create, you have to enter a password to access that account.
+Enter password of your choice. You will get a unique address for the account.
+
+Let’s create 2 more accounts using the same process.
+
+To view all the accounts we have created:
+
+$ geth --datadir . account list
+
+
+Step 4: Write a Shell Script to Start Blockchain
+-----------------------------------
+In any text editor, create a file named startnode.sh in private folder.
+
+Paste this (in one single line):
+
+geth --networkid 4224 --mine --minerthreads 1 --datadir "~/Desktop/Playground/ethereum-tutorial/private" --nodiscover --rpc --rpcport "8545" --port "30303" --rpccorsdomain "*" --nat "any" --rpcapi eth,web3,personal,net --unlock 0 --password ~/ethereum-tutorial/private/password.sec --ipcpath "~/Library/Ethereum/geth.ipc"
+
+Create another file named password.sec in private folder.
+Enter the password for the first account you created and save it.
+
+To make this script executable:
+
+$ chmod +x startnode.sh
+
+Execute this script:
+
+$ ./startnode.sh
+
+This will start a never-ending output. This is blockchain. Our blockchain has started.
+Wait for all the DAGs to get generated. In the middle you may see mining taking place.
+This will put fake ethers in the first account.
+
+
+Step 5: Connect to running geth
+-----------------------------------
+Let’s get connected with this geth node. On another tab in terminal, run the command.
+
+$ geth attach
+
+You will enter into the Geth Javascript console. Here, you can run JavaScript code.
+This means you’ve successfully connected! Yah!
+
+
+Step 6: Query the blockchain
+-----------------------------------
+Let’s see what all accounts are present on this blockchain.
+
+> eth.accounts
+
+This will show the 3 accounts we created earlier.
+
+To get balance of the accounts:
+
+> eth.getBalance(eth.accounts[0])
+
+This will show balance in Wei. To convert this in Ether, do this:
+
+> web3.fromWei(eth.getBalance(eth.accounts[0]), "ether")
+
+
+Info: Stop Mining or Start Mining
+-----------------------------------
+If you wish to stop mining process:
+
+> miner.stop()
+
+If you wish to start mining process:
+
+> miner.start()
+
+
+Step 7: Make transactions
+-----------------------------------
+Let’s send some ethers from one account to another.
+We will send ethereum from coinbase account (the account that is mining ethers) to any of
+the other 2 accounts.
+
+> eth.sendTransaction({from: eth.coinbase, to: eth.accounts[1], value: web3.toWei(10, "ether")})
+
+This will return transaction hash.
+
+Now let’s get balance of 2nd account.
+
+> web3.fromWei(eth.getBalance(eth.accounts[1]), "ether")
+
+Now if you switch back to the tab where blockchain is running, you will see a transaction.
+
+Since JavaScript is being executed on the Geth console, you can even deploy smart contracts
+on it.
