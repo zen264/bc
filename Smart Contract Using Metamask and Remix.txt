@@ -1,0 +1,74 @@
+Steps to Install MetaMask
+-------------------------
+
+1. Go to Chrome Web Store and search for MetaMask.
+
+2. Click on "Add to Chrome".
+
+3. Click on "Get Started".
+
+4. Click on "Create Wallet" and then click on "I Agree".
+
+5. Create a password and click on "Create a New Wallet".
+
+6. Click on "Secure my wallet".
+
+7. Write down your Secret Recovery Phrase somewhere safe in your system.
+
+8. Click on "Confirm" by entering the Secret Recovery Phrase.
+
+9. Click on "Done" to finalize the MetaMask Wallet account. 
+   Once you have completed the account creation process, you will be greeted with the main MetaMask screen.
+
+10. Next, click on the network drop-down (top center of MetaMask) and choose 
+    "Show/Hide Test Networks" as seen in the image below.
+
+11. Toggle "Show Test Networks" to ON, then scroll to the top and close the settings.
+
+12. Now click on the networks tab again. You will see a list of test networks, including 
+    an option to add a custom one.
+
+13. We will use the Goerli Test Network.
+
+14. We need to add test Ether to the Goerli account in order to complete transactions on 
+    the MetaMask Wallet. 
+    Use the following link for the Goerli Faucet to get Test Ether:
+    https://goerlifaucet.com/
+
+15. Copy your account address from MetaMask Wallet and paste it into the Goerli Faucet 
+    website, then click on "Send me ETH". 
+    Fake/Test 0.2 ETH will be added to your MetaMask Wallet.
+
+16. Open Remix IDE using the following link:
+    https://remix.ethereum.org
+
+17. Create a new file named "hello.sol".
+
+18. Write the following sample code in the editor:
+
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.13;
+
+contract hello {
+    function sayHelloWorld() public pure returns (string memory) {
+        return "Hello World";
+    }
+}
+
+19. Compile the code by clicking "Compile Hello.sol".
+
+20. Go to "DEPLOY & RUN TRANSACTION".
+
+21. Select Environment as "Injected Provider – MetaMask" and click on "Deploy".
+
+22. Click on the "Deploy" button to connect with your MetaMask wallet.
+
+23. Once you click on "Connect", the transaction will appear in the MetaMask wallet.
+
+24. Click on "Confirm" to finalize the transaction. 
+    The transaction will be executed in the wallet, and gas fees will be deducted from your account as contract fees.
+
+25. You can now see the contract details in your wallet.
+
+26. Transaction details will also be reflected on the Goerli Test Network:
+    https://goerli.etherscan.io/
